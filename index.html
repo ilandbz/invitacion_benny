@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Cumpleaños de Benny</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+
+        /* Fondo con imagen */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('benny.jpg'); /* Cambia 'fondo.jpg' por el nombre de tu imagen */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15; /* Ajusta la transparencia (0.1 = muy transparente, 0.3 = más visible) */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .sky-background {
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 50%, #B0E2FF 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Imagen de Benny detrás del cielo */
+        .sky-background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('benny.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.2;      /* Ajusta la opacidad a tu gusto (0.1–0.4) */
+            z-index: 0;
+        }
+
+        /* Asegura que nubes y texto queden encima de la foto */
+        .sky-background > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.9;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cloud1:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1:after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 50px;
+            top: 40%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .cloud2:before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud2:after {
+            width: 70px;
+            height: 50px;
+            top: -20px;
+            right: 15px;
+        }
+
+        .cloud3 {
+            width: 80px;
+            height: 35px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        .cloud3:before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud3:after {
+            width: 50px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+            }
+            50% {
+                transform: translateY(-20px) translateX(20px);
+            }
+        }
+
+        .invitation-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Banner horizontal superior */
+        .brainrot-banner {
+            width: 100%;
+            height: 220px; /* Ajusta la altura según necesites */
+            background-image: url('hq720.png'); /* Cambia 'banner.jpg' por el nombre de tu banner */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px 25px 0 0; /* Mantiene el borde redondeado arriba */
+        }
+
+        .brainrot-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, white);
+        }
+
+        /* Alternativa: Banner con opacidad ajustable */
+        .brainrot-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(102, 126, 234, 0.1); /* Overlay de color opcional, ajusta o elimina */
+            pointer-events: none;
+        }
+
+        .header-section {
+            padding: 40px 30px 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .balloon {
+            font-size: 3rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .guest-name-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            color: white;
+        }
+
+        .info-section {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .info-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .info-item i {
+            color: #667eea;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .buttons-section {
+            padding: 30px;
+            text-align: center;
+            background: white;
+        }
+
+        .btn-custom {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            margin: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-accept:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-accept:active {
+            transform: scale(0.98);
+        }
+
+        .btn-decline {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-decline:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-decline:active {
+            transform: scale(0.98);
+        }
+
+        .decorative-line {
+            height: 3px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+
+        .response-message {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .response-accept {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .response-decline {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .guest-input {
+            font-size: 1.3rem;
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #667eea;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .guest-input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+            transform: scale(1.02);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+            animation: slideUp 0.3s;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: #c0392b;
+            transform: rotate(90deg);
+        }
+
+        .map-container {
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 450px;
+            border: none;
+        }
+
+        .map-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .map-header h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .map-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .map-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .map-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .map-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .map-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .map-btn-secondary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .map-btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: 95%;
+                padding: 20px;
+            }
+
+            .map-frame {
+                height: 350px;
+            }
+
+            .map-buttons {
+                flex-direction: column;
+            }
+
+            .map-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-card">
+        <!-- Banner Brainrot -->
+        <div class="brainrot-banner"></div>
+
+        <!-- Sky background with clouds -->
+        <div class="sky-background header-section">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+            
+            <div class="balloon">🎈</div>
+            <div class="title">¡HOLA ESTAS INVITADO!</div>
+            <div class="subtitle">A MI CUMPLEAÑOS #8</div>
+            <div style="font-size: 3rem; margin: 20px 0;">
+                <span style="display: inline-block; animation: bounce 1s infinite; animation-delay: 0s;">🎉</span>
+                <span style="display: inline-block; animation: bounce 1s infinite; animation-delay: 0.2s;">🎂</span>
+                <span style="display: inline-block; animation: bounce 1s infinite; animation-delay: 0.4s;">🎁</span>
+            </div>
+        </div>
+
+        <!-- Guest name section -->
+        <div class="guest-name-section">
+            <label class="form-label" style="font-size: 1.2rem;">
+                <i class="fas fa-user"></i> Nombre del invitado:
+            </label>
+            <input type="text" id="guestName" class="form-control guest-input" placeholder="Escribe tu nombre aquí">
+        </div>
+
+        <!-- Event details -->
+        <div class="info-section">
+            <h3 class="text-center mb-4" style="color: #667eea;">
+                <i class="fas fa-gift"></i> Detalles
+            </h3>
+            
+            <div class="decorative-line"></div>
+            
+            <div class="info-item">
+                <i class="fas fa-birthday-cake"></i>
+                <strong>Festejado:</strong> Benny
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <strong>Fecha:</strong> Sábado 29 de noviembre
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <strong>Hora:</strong> 4:00 PM
+            </div>
+
+            <div class="info-item" style="cursor: pointer;" onclick="openMapModal()">
+                <i class="fas fa-map-marker-alt"></i>
+                <strong>Lugar:</strong>Jr. Cajamarca Mz U Lt 5 - en Google Maps Figura como mayo<br>
+                <span style="margin-left: 35px;">Frente Grifo Amarilis Cdra y Media</span>
+                <div style="margin-top: 10px;">
+                    <button class="btn btn-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 8px 20px; border-radius: 20px;">
+                        <i class="fas fa-map"></i> Ver en el mapa
+                    </button>
+                </div>
+            </div>
+
+            <div class="decorative-line"></div>
+
+            <div class="text-center mt-4">
+                <h4 style="color: #e74c3c; font-size: 1.8rem; animation: bounce 2s infinite;">
+                    ¡TE ESPERAMOS! 🎊
+                </h4>
+                <div style="margin-top: 15px; display: flex; justify-content: center; gap: 20px; font-size: 2rem;">
+                    <span style="animation: bounce 1.5s infinite; animation-delay: 0s;">🎈</span>
+                    <span style="animation: bounce 1.5s infinite; animation-delay: 0.3s;">🎉</span>
+                    <span style="animation: bounce 1.5s infinite; animation-delay: 0.6s;">🎊</span>
+                    <span style="animation: bounce 1.5s infinite; animation-delay: 0.9s;">🎁</span>
+                    <span style="animation: bounce 1.5s infinite; animation-delay: 1.2s;">🎈</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response buttons -->
+        <div class="buttons-section">
+            <h4 style="color: #667eea; margin-bottom: 25px;">¿Confirmas tu asistencia?</h4>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <span>Guardando...</span>
+            </div>
+            
+            <button class="btn btn-custom btn-accept" id="btnAccept" onclick="acceptInvitation()">
+                <i class="fas fa-check-circle"></i> Sí, asistiré
+            </button>
+            
+            <button class="btn btn-custom btn-decline" id="btnDecline" onclick="declineInvitation()">
+                <i class="fas fa-times-circle"></i> No podré asistir
+            </button>
+
+            <div id="responseMessage" class="response-message"></div>
+        </div>
+    </div>
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal-overlay" onclick="closeMapModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeMapModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="map-header">
+                <h3><i class="fas fa-map-marked-alt"></i> Ubicación de la Fiesta</h3>
+                <p><i class="fas fa-home"></i> Jr. Cajamarca Mz U Lt 5 - en Google Maps Figura como mayo<br>
+                <small style="color: #999;">Frente Grifo Amarilis</small></p>
+            </div>
+
+            <div class="map-container">
+                <iframe 
+                    class="map-frame"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d655.7207937714082!2d-76.2384141245275!3d-9.943523963030843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2spe!4v1763175675073!5m2!1ses-419!2spe"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <div class="map-buttons">
+                <button class="map-btn map-btn-primary" onclick="openInGoogleMaps()">
+                    <i class="fab fa-google"></i> Abrir en Google Maps
+                </button>
+                <button class="map-btn map-btn-secondary" onclick="openInWaze()">
+                    <i class="fab fa-waze"></i> Abrir en Waze
+                </button>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+                <p style="margin: 0; color: #6c757d;">
+                    <i class="fas fa-info-circle"></i> 
+                    Usa tu app de navegación favorita para llegar sin problemas
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const MAP_URL = 'https://maps.app.goo.gl/SFWpWsFhPB2ABuof9';
+
+        function openMapModal() {
+            document.getElementById('mapModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMapModal(event) {
+            if (!event || event.target.id === 'mapModal') {
+                document.getElementById('mapModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function openInGoogleMaps() {
+            window.open(MAP_URL, '_blank');
+        }
+
+        function openInWaze() {
+            // Waze usa coordenadas, intentará abrir Waze o Google Maps
+            window.open(MAP_URL, '_blank');
+        }
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeMapModal();
+            }
+        });
+
+        function showLoading(show) {
+            document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
+            document.getElementById('btnAccept').disabled = show;
+            document.getElementById('btnDecline').disabled = show;
+        }
+
+        async function acceptInvitation() {
+            const guestName = document.getElementById('guestName').value.trim();
+            const responseMessage = document.getElementById('responseMessage');
+            
+            if (guestName === '') {
+                alert('Por favor, escribe tu nombre primero');
+                document.getElementById('guestName').focus();
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'accept',
+                        name: guestName
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    responseMessage.className = 'response-message response-accept';
+                    responseMessage.innerHTML = `
+                        <i class="fas fa-heart"></i> ${data.message}<br>
+                        <small>Tu confirmación ha sido guardada</small>
+                    `;
+                    responseMessage.style.display = 'block';
+
+                    setTimeout(() => {
+                        document.getElementById('guestName').value = '';
+                        responseMessage.style.display = 'none';
+                    }, 4000);
+                } else {
+                    responseMessage.className = 'response-message response-accept';
+                    responseMessage.innerHTML = `<i class="fas fa-info-circle"></i> ${data.message}`;
+                    responseMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar tu respuesta. Por favor, intenta de nuevo.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function declineInvitation() {
+            const guestName = document.getElementById('guestName').value.trim();
+            const responseMessage = document.getElementById('responseMessage');
+            
+            if (guestName === '') {
+                alert('Por favor, escribe tu nombre primero');
+                document.getElementById('guestName').focus();
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'decline',
+                        name: guestName
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    responseMessage.className = 'response-message response-decline';
+                    responseMessage.innerHTML = `
+                        <i class="fas fa-sad-tear"></i> ${data.message}<br>
+                        <small>Tu respuesta ha sido guardada</small>
+                    `;
+                    responseMessage.style.display = 'block';
+
+                    setTimeout(() => {
+                        document.getElementById('guestName').value = '';
+                        responseMessage.style.display = 'none';
+                    }, 4000);
+                } else {
+                    responseMessage.className = 'response-message response-decline';
+                    responseMessage.innerHTML = `<i class="fas fa-info-circle"></i> ${data.message}`;
+                    responseMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar tu respuesta. Por favor, intenta de nuevo.');
+            } finally {
+                showLoading(false);
+            }
+        }
+    </script>
+</body>
+</html>

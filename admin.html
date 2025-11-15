@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Cumpleaños Benny</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .stats-section {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .controls-section {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .btn-admin {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            margin: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .lists-section {
+            padding: 30px;
+        }
+
+        .guest-list-container {
+            margin-bottom: 30px;
+        }
+
+        .guest-list-header {
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .header-accepted {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .header-declined {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .guest-list {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .guest-item {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .guest-item:hover {
+            background: #f8f9fa;
+        }
+
+        .guest-item:last-child {
+            border-bottom: none;
+        }
+
+        .guest-info {
+            flex: 1;
+        }
+
+        .guest-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .guest-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .guest-icon {
+            font-size: 1.5rem;
+        }
+
+        .empty-list {
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .password-section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .password-input {
+            font-size: 1.2rem;
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #667eea;
+            text-align: center;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection -->
+    <div id="passwordSection" class="admin-container" style="max-width: 500px;">
+        <div class="admin-header">
+            <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px;"></i>
+            <h1>Panel de Administración</h1>
+        </div>
+        <div class="password-section">
+            <p style="color: #6c757d; margin-bottom: 20px;">Ingresa la contraseña para acceder</p>
+            <input type="password" id="passwordInput" class="form-control password-input" placeholder="Contraseña">
+            <button class="btn btn-admin" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;" onclick="checkPassword()">
+                <i class="fas fa-sign-in-alt"></i> Acceder
+            </button>
+            <p style="color: #999; font-size: 0.9rem; margin-top: 20px;">
+                Contraseña por defecto: <strong>benny2024</strong><br>
+                <small>(Puedes cambiarla en api.php)</small>
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-container" style="display: none;">
+        <div class="admin-header">
+            <i class="fas fa-chart-bar" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+            <h1>Panel de Administración</h1>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">Cumpleaños de Benny #8</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-section">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 2rem;"></i>
+                        <div class="stat-number" id="acceptedCount" style="color: #28a745;">0</div>
+                        <div class="stat-label">Confirmados</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <i class="fas fa-times-circle" style="color: #dc3545; font-size: 2rem;"></i>
+                        <div class="stat-number" id="declinedCount" style="color: #dc3545;">0</div>
+                        <div class="stat-label">No Asistirán</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <i class="fas fa-users" style="color: #667eea; font-size: 2rem;"></i>
+                        <div class="stat-number" id="totalCount" style="color: #667eea;">0</div>
+                        <div class="stat-label">Total Respuestas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-section">
+            <button class="btn btn-admin" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;" onclick="loadData()">
+                <i class="fas fa-sync-alt"></i> Actualizar Datos
+            </button>
+            <button class="btn btn-admin" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;" onclick="downloadTXT()">
+                <i class="fas fa-download"></i> Descargar TXT
+            </button>
+            <button class="btn btn-admin" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); color: white;" onclick="downloadCSV()">
+                <i class="fas fa-file-csv"></i> Descargar CSV
+            </button>
+        </div>
+
+        <!-- Guest Lists -->
+        <div class="lists-section">
+            <!-- Accepted List -->
+            <div class="guest-list-container">
+                <div class="guest-list-header header-accepted">
+                    <i class="fas fa-check-circle"></i> Confirmados
+                </div>
+                <div class="guest-list" id="acceptedList">
+                    <div class="empty-list">Cargando...</div>
+                </div>
+            </div>
+
+            <!-- Declined List -->
+            <div class="guest-list-container">
+                <div class="guest-list-header header-declined">
+                    <i class="fas fa-times-circle"></i> No Asistirán
+                </div>
+                <div class="guest-list" id="declinedList">
+                    <div class="empty-list">Cargando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Cargando datos...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let responses = { accepted: [], declined: [] };
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            
+            if (password === 'benny2024') {
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadData();
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        }
+
+        // Permitir Enter en el campo de contraseña
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        async function loadData() {
+            showLoading(true);
+
+            try {
+                const response = await fetch('api.php?action=get_all');
+                const data = await response.json();
+
+                if (data.success) {
+                    responses = data.data;
+                    updateDisplay();
+                } else {
+                    alert('Error al cargar los datos');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cargar los datos. Verifica que api.php esté en el servidor.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function updateDisplay() {
+            // Update counters
+            document.getElementById('acceptedCount').textContent = responses.accepted.length;
+            document.getElementById('declinedCount').textContent = responses.declined.length;
+            document.getElementById('totalCount').textContent = responses.accepted.length + responses.declined.length;
+
+            // Update accepted list
+            const acceptedList = document.getElementById('acceptedList');
+            if (responses.accepted.length === 0) {
+                acceptedList.innerHTML = '<div class="empty-list">Aún no hay confirmaciones</div>';
+            } else {
+                acceptedList.innerHTML = responses.accepted.map((guest, index) => `
+                    <div class="guest-item">
+                        <div class="guest-info">
+                            <div class="guest-name">${index + 1}. ${guest.name}</div>
+                            <div class="guest-date"><i class="far fa-clock"></i> ${guest.date}</div>
+                        </div>
+                        <i class="fas fa-check-circle guest-icon" style="color: #28a745;"></i>
+                    </div>
+                `).join('');
+            }
+
+            // Update declined list
+            const declinedList = document.getElementById('declinedList');
+            if (responses.declined.length === 0) {
+                declinedList.innerHTML = '<div class="empty-list">Ninguno ha declinado</div>';
+            } else {
+                declinedList.innerHTML = responses.declined.map((guest, index) => `
+                    <div class="guest-item">
+                        <div class="guest-info">
+                            <div class="guest-name">${index + 1}. ${guest.name}</div>
+                            <div class="guest-date"><i class="far fa-clock"></i> ${guest.date}</div>
+                        </div>
+                        <i class="fas fa-times-circle guest-icon" style="color: #dc3545;"></i>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function downloadTXT() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-PE');
+            const timeStr = now.toLocaleTimeString('es-PE');
+            
+            let content = `CONFIRMACIONES - CUMPLEAÑOS DE BENNY #8\n`;
+            content += `Generado: ${dateStr} ${timeStr}\n`;
+            content += `===============================================\n\n`;
+            
+            content += `✅ ASISTIRÁN (${responses.accepted.length}):\n`;
+            content += `-`.repeat(45) + `\n`;
+            if (responses.accepted.length > 0) {
+                responses.accepted.forEach((guest, index) => {
+                    content += `${index + 1}. ${guest.name} - ${guest.date}\n`;
+                });
+            } else {
+                content += `Aún no hay confirmaciones\n`;
+            }
+            
+            content += `\n❌ NO ASISTIRÁN (${responses.declined.length}):\n`;
+            content += `-`.repeat(45) + `\n`;
+            if (responses.declined.length > 0) {
+                responses.declined.forEach((guest, index) => {
+                    content += `${index + 1}. ${guest.name} - ${guest.date}\n`;
+                });
+            } else {
+                content += `Ninguno ha declinado\n`;
+            }
+            
+            content += `\n===============================================\n`;
+            content += `TOTAL CONFIRMADOS: ${responses.accepted.length}\n`;
+            content += `TOTAL DECLINADOS: ${responses.declined.length}\n`;
+            content += `TOTAL RESPUESTAS: ${responses.accepted.length + responses.declined.length}\n`;
+
+            downloadFile(content, `confirmaciones_benny_${now.getTime()}.txt`, 'text/plain');
+        }
+
+        function downloadCSV() {
+            let csv = 'Nombre,Estado,Fecha\n';
+            
+            responses.accepted.forEach(guest => {
+                csv += `"${guest.name}","Confirmado","${guest.date}"\n`;
+            });
+            
+            responses.declined.forEach(guest => {
+                csv += `"${guest.name}","No asistirá","${guest.date}"\n`;
+            });
+
+            const now = new Date();
+            downloadFile(csv, `confirmaciones_benny_${now.getTime()}.csv`, 'text/csv');
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type: type + ';charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
